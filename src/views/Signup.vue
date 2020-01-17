@@ -37,8 +37,6 @@ export default {
     methods: {
         registerUser(){
             /* eslint-disable no-console */
-            console.log(this.name, this.email, this.password)
-
             Axios.post('https://react-blog-api.bahdcasts.com/api/auth/register', {
                     name: this.name,
                     email: this.email,
@@ -47,7 +45,8 @@ export default {
                 .then((response) => {
                     const {data} = response.data;
                     localStorage.setItem('auth', JSON.stringify(data))
-                    this.$root.auth = data;
+                    this.$root.auth = data; //sending auth data to main.js
+                    this.$router.push('home'); //redirects to home view
                 })
                 .catch(({response}) => {
                     console.log(response)
