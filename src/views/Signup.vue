@@ -64,9 +64,11 @@ export default {
                     const {data} = response.data;
                     localStorage.setItem('auth', JSON.stringify(data));
                     this.$root.auth = data; //sending auth data to main.js
-                    this.$router.push('home'); //redirects to home view
+                    this.$noty.success('Successfully registered.');
+                    this.$router.push('/'); //redirects to home view
                 })
                 .catch(({response}) => {
+                    this.$noty.error('Opps something went wrong.');
                     this.loading = false;
                     this.submitted = true;
                     this.errors = response.data;
