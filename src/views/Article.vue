@@ -1,5 +1,23 @@
 <template>
-    <h1 class="text-center">{{ $route.params.id }}</h1>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="card" v-if="!loading">
+                    <img :src="article.imageUrl" height="420px" alt="" class="card-img-top">
+                    <div class="card-body">
+                        <h1 class="card-title text-center my-3">{{article.title}}</h1>
+                        <div class="article-content" v-html="article.content"></div>
+                        <div class="comments my-4">
+                            <vue-disqus shortname="vuejs-blog" :identifier="article.slug" :url="url"></vue-disqus>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="loader text-center" v-else>
+                    <i class="fas fa-5x fa-spin fa-spinner"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -10,12 +28,19 @@ export default {
     mounted(){
         this.getArticle();
     },
+    data(){
+        return {
+            article: {},
+            loading: true,
+            url: window.location.href
+        }
+    },
     methods: {
         getArticle(){
             Axios.get(`${config.apiUrl}/article/${this.$route.params.id}`)
                 .then(response => {
-                    /* eslint-disable no-console */
-                    console.log(response)
+                    this.loading = false
+                    this.article = response.data.data
                 })
         }
     }
